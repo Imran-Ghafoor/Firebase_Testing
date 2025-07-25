@@ -1,10 +1,7 @@
 // lib/firebase.js
 import { initializeApp } from "firebase/app";
-import {
-    getRemoteConfig,
-    fetchAndActivate,
-    getValue,
-} from "firebase/remote-config";
+import { getRemoteConfig } from "firebase/remote-config";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDwE-NzUobrtTEy96IhiIMeNnN9hcjavxQ",
@@ -17,6 +14,10 @@ const firebaseConfig = {
 
 
 const app = initializeApp(firebaseConfig);
+let analytics = null;
+isSupported().then((yes) => {
+    if (yes) analytics = getAnalytics(app);
+});
 const remoteConfig = getRemoteConfig(app);
 
 remoteConfig.settings = {
@@ -24,8 +25,8 @@ remoteConfig.settings = {
 };
 
 remoteConfig.defaultConfig = {
-    button_text: "Default Button",
-    banner_url: "/default-banner.jpg",
+    button_text: "Default Text",
+    banner_image: "default.jpg",
 };
 
-export { remoteConfig, fetchAndActivate, getValue };
+export { remoteConfig, analytics };
