@@ -17,10 +17,12 @@ export default function ABTestSection() {
                 setButtonText(btnText);
                 setBannerImage(img);
 
-                logEvent(analytics, "ab_test_loaded", {
-                    button_text: btnText,
-                    banner_image: img,
-                });
+                if (analytics) {
+                    logEvent(analytics, "ab_test_loaded", {
+                        button_text: btnText,
+                        banner_image: img,
+                    });
+                }
             })
             .catch((err) => {
                 console.error("Remote Config fetch failed:", err);
@@ -28,9 +30,12 @@ export default function ABTestSection() {
     }, []);
 
     const handleClick = () => {
-        logEvent(analytics, "button_clicked", {
-            button_text: buttonText,
-        });
+        if (analytics) {
+            logEvent(analytics, "button_clicked", {
+                button_text: buttonText,
+                debug_mode: true,
+            });
+        }
         alert(`Clicked: ${buttonText}`);
     };
 
