@@ -17,8 +17,15 @@ const app = initializeApp(firebaseConfig);
 let analytics = null;
 isSupported().then((yes) => {
     if (yes) analytics = getAnalytics(app);
+
+    // ✅ Force DebugView logging
+    if (typeof window !== 'undefined') {
+        window['firebase_analytics_debug_mode'] = true;
+    }
 });
 const remoteConfig = getRemoteConfig(app);
+
+
 
 remoteConfig.settings = {
     minimumFetchIntervalMillis: 0, // 1 hour
